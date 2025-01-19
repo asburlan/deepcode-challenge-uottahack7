@@ -66,8 +66,8 @@ if file_path:
     #     if st.button("Next Page") and current_page < total_pages:
     #         current_page += 1
 
-    # pages = split_frame(dataset, batch_size)
-    # pagination.dataframe(data=pages[current_page - 1], use_container_width=True, hide_index=True)
+    pages = split_frame(dataset, batch_size)
+    pagination.dataframe(data=pages[current_page - 1], use_container_width=True, hide_index=True)
 
 
 
