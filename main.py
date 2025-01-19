@@ -36,7 +36,7 @@ if file_path:
     with top_menu[1]:
         search = st.text_input("Search", placeholder="eg. roblox")
 
-        dataset = dataset[dataset['uri'].str.contains(search)]
+        dataset = dataset[dataset['uri'].str.contains(search, case=False, na=False)]
     # with top_menu[0]:
     #     sort = st.radio("Sort Data", options=["Yes", "No"], horizontal=1, index=1)
     # if sort == "Yes":
