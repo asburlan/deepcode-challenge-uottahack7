@@ -25,10 +25,14 @@ def split_frame(input_df, rows):
     df = [input_df.loc[i : i + rows - 1, :] for i in range(0, len(input_df), rows)]
     return df
 
-file_path = 'final_output_final_final.txt'
+file_path = 'final_output_with_priv.txt'
 if file_path:
     dataset = load_data(file_path)
     top_menu = st.columns(3)
+    with top_menu[0]:
+        filter = st.checkbox("exclude non routable ip ranges", value=True)
+    if filter:
+        dataset = dataset[dataset['is_private'] != True]
     # with top_menu[0]:
     #     sort = st.radio("Sort Data", options=["Yes", "No"], horizontal=1, index=1)
     # if sort == "Yes":
