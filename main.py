@@ -33,6 +33,10 @@ if file_path:
         filter = st.checkbox("exclude non routable ip ranges", value=True)
     if filter:
         dataset = dataset[dataset['is_private'] != True]
+    with top_menu[1]:
+        search = st.text_input("Search", placeholder="eg. roblox")
+
+        dataset = dataset[dataset['uri'].str.contains(search)]
     # with top_menu[0]:
     #     sort = st.radio("Sort Data", options=["Yes", "No"], horizontal=1, index=1)
     # if sort == "Yes":
@@ -61,7 +65,7 @@ if file_path:
         st.markdown(f"Page **{current_page}** of **{total_pages}** ")
 
 
-    # Add Increase and Decrease buttons
+    # #Add Increase and Decrease buttons
     # col1, col2 = st.columns([1, 1])
     # with col1:
     #     if st.button("Previous Page") and current_page > 1:
@@ -73,7 +77,8 @@ if file_path:
     pages = split_frame(dataset, batch_size)
     pagination.dataframe(data=pages[current_page - 1], use_container_width=True, hide_index=True)
 
-
+    # while True:
+    #     if search
 
 
 #st.set_page_config(layout="centered")
