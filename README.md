@@ -8,6 +8,9 @@ The data breach dashboard takes pastes containing magnitudes of compromised acco
 
 
 ### to run
-sequentially run the ipynb with priv while the input file named sample.txt is in the cwd
+i. sequentially run the ipynb with priv while the input file named sample.txt is in the cwd
+
+ii. 'streamlit run main.py' when finished with the final output in the cwd
+
 
 
