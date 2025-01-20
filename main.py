@@ -43,13 +43,13 @@ if file_path:
         st.markdown(f"Page **{current_page}** of **{total_pages}** ")
 
     # Add Increase and Decrease buttons
-    col1, col2 = st.columns([1, 1])
-    with col1:
-        if st.button("Previous Page") and current_page > 1:
-            current_page -= 1
-    with col2:
-        if st.button("Next Page") and current_page < total_pages:
-            current_page += 1
+    # col1, col2 = st.columns([1, 1])
+    # with col1:
+    #     if st.button("Previous Page") and current_page > 1:
+    #         current_page -= 1
+    # with col2:
+    #     if st.button("Next Page") and current_page < total_pages:
+    #         current_page += 1
 
     paginated_data = split_frame(dataset, batch_size, current_page)
     pagination.dataframe(data=paginated_data, use_container_width=True, hide_index=True)
