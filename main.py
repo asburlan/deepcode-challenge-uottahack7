@@ -1,17 +1,5 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
-#import toml
-#import mysql.connector as connection
-
-
-
-#streamlit moment 3+ hours lost
-# Initialize connection.
-#conn = st.connection('mysql', type='sql')
-
-# Perform query.
-#df = conn.query('SELECT * FROM breach WHERE uri = "https://roblox.com" ORDER BY id DESC LIMIT 10;', ttl=600)
 
 st.set_page_config(layout="centered")
 
@@ -21,9 +9,10 @@ def load_data(file_path):
     return dataset
 
 @st.cache_data(show_spinner=False)
-def split_frame(input_df, rows):
-    df = [input_df.loc[i : i + rows - 1, :] for i in range(0, len(input_df), rows)]
-    return df
+def split_frame(input_df, rows, page):
+    start = (page - 1) * rows
+    end = start + rows
+    return input_df.iloc[start:end]
 
 file_path = 'final_output_with_priv.txt'
 if file_path:
@@ -35,20 +24,9 @@ if file_path:
         dataset = dataset[dataset['is_private'] != True]
     with top_menu[1]:
         search = st.text_input("Search", placeholder="eg. roblox")
-
-        dataset = dataset[dataset['uri'].str.contains(search, case=False, na=False)]
-    # with top_menu[0]:
-    #     sort = st.radio("Sort Data", options=["Yes", "No"], horizontal=1, index=1)
-    # if sort == "Yes":
-    #     with top_menu[1]:
-    #         sort_field = st.selectbox("Sort By", options=dataset.columns)
-    #     with top_menu[2]:
-    #         sort_direction = st.radio(
-    #             "Direction", options=["⬆️", "⬇️"], horizontal=True
-    #         )
-    #     dataset = dataset.sort_values(
-    #         by=sort_field, ascending=sort_direction == "⬆️", ignore_index=True
-    #     )
+        if search:
+            dataset = dataset[dataset['uri'].str.contains(search, case=False, na=False)]
+    
     pagination = st.container()
 
     bottom_menu = st.columns((4, 1, 1))
@@ -64,32 +42,14 @@ if file_path:
     with bottom_menu[0]:
         st.markdown(f"Page **{current_page}** of **{total_pages}** ")
 
+    # Add Increase and Decrease buttons
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        if st.button("Previous Page") and current_page > 1:
+            current_page -= 1
+    with col2:
+        if st.button("Next Page") and current_page < total_pages:
+            current_page += 1
 
-    # #Add Increase and Decrease buttons
-    # col1, col2 = st.columns([1, 1])
-    # with col1:
-    #     if st.button("Previous Page") and current_page > 1:
-    #         current_page -= 1
-    # with col2:
-    #     if st.button("Next Page") and current_page < total_pages:
-    #         current_page += 1
-
-    pages = split_frame(dataset, batch_size)
-    pagination.dataframe(data=pages[current_page - 1], use_container_width=True, hide_index=True)
-
-    # while True:
-    #     if search
-
-
-#st.set_page_config(layout="centered")
-
-
-
-#df = pd.read_csv('final_output_final_final.txt', sep=':')
-#st.dataframe(df, hide_index=True)
-
-# Using the variables we read from secrets.toml
-
-
-# dataframe = np.random.randn(10, 20)
-# st.dataframe(dataframe)
+    paginated_data = split_frame(dataset, batch_size, current_page)
+    pagination.dataframe(data=paginated_data, use_container_width=True, hide_index=True)
